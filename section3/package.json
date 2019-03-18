@@ -1,0 +1,24 @@
+{
+  "name": "nodejsudemy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ex09.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lathanhdat/NodeJSUdemy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lathanhdat/NodeJSUdemy/issues"
+  },
+  "homepage": "https://github.com/lathanhdat/NodeJSUdemy#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "validator": "^10.11.0",
+    "yargs": "^13.2.2"
+  }
+}
