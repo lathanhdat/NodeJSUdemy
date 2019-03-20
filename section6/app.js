@@ -7,12 +7,12 @@ if(!yourLocation)
     console.log('Please provide location.')
 }
 else{
-    geocode(yourLocation,(error,geodata)=>{
+    geocode(yourLocation,(error,{latitute, longitude, location})=>{
         if(error) return console.log(error);
     
-        darksky(geodata.latitute,geodata.longitude,(error,weather)=>{
+        darksky(latitute,longitude,(error,{temperature})=>{
             if(error) return console.log(error);
-            console.log(`It's now ${weather.temperature} celcius degree in ${geodata.location}`);
+            console.log(`It's now ${temperature} celcius degree in ${location}`);
         });
     });
 }
