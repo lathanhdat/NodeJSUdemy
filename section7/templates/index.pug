@@ -1,8 +1,18 @@
 extend layout
 
-block headcontent
-    div
-        a(href="/") Index
-        a(href="/about") About
-        a(href="/help") Help
-    h1 Index page
+append headblock
+
+append headcontent
+  h1 Index page
+  div
+    form
+      input(placeholder="Location")
+      button Search
+
+append bodycontent
+  div
+    p(id="mes1") abc
+    p(id="mes2") def
+
+append footcontent
+    script(src="/js/script.js")

@@ -1,6 +1,8 @@
 const express = require('express'); //Function
 const appExpress = express();//Application
 const path = require('path');
+const geocode = require('./utils/geocode');
+const darksky = require('./utils/darksky');
 
 //Define path 
 const viewsPath = path.join(__dirname,'../templates');
@@ -19,7 +21,6 @@ appExpress.get('/',(req,res)=>{
     });
 })
 
-
 appExpress.get('/help',(req,res)=>{
     res.render('help',{
         title : 'Help page'
@@ -33,7 +34,35 @@ appExpress.get('/about',(req,res)=>{
 })
 
 appExpress.get('/weather',(req,res)=>{
-    res.send('Weather');
+    if(!req.query.address){
+        return res.send({
+            error : 'Pls input address'
+        });
+    }
+    geocode(req.query.address.toString(),(geoerror,{latitute, longitude, location} = {})=>{
+        if(geoerror){
+            return res.send({
+                error : geoerror
+            });
+        }
+        darksky(latitute,longitude,(skyerror,{temperature} = {})=>{
+            if(skyerror){
+                return res.send({
+                    error : skyerror
+                });
+            }
+            res.send({
+                location : location,
+                temperature : temperature
+            })
+        });
+    });
+    
+})
+
+appExpress.get('/product',(req,res)=>{
+    console.log(req.query);
+    res.send('product');
 })
 
 appExpress.get('/help/*',(req,res)=>{
@@ -49,6 +78,6 @@ appExpress.get('*',(req,res)=>{
 })
 
 
-appExpress.listen(4000,()=>{
+appExpress.listen(3000,()=>{
     console.log('Server in running on port 3000');
 })

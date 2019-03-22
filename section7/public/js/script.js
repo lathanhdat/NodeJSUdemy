@@ -1,1 +1,28 @@
-console.log("from script js");
+const weatherForm = document.querySelector('form');
+const searchBox = document.querySelector('input');
+const errorMessage = document.querySelector('#mes1');
+const dataMessage = document.querySelector('#mes2');
+
+errorMessage.textContent = "From javascript";
+// errorMessage.textContent = 'From javascript';
+console.log(errorMessage);
+
+weatherForm.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    const location = searchBox.value
+    const fetchChanel = 'http://localhost:3000/weather?address='
+
+    fetch(fetchChanel + location).then((response)=>{
+    response.json().then((data)=>{
+        if(data.error){
+            console.log(data.error);
+        }
+        else
+        {
+            console.log(data);
+        }
+    })
+})
+})
+
+

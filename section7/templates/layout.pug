@@ -1,11 +1,18 @@
 doctype html
 html
-    head
-        link(rel = "stylesheet" href="/css/style.css")
-        script(src="/js/script.js")
-        title #{title}
-    body
-        block headcontent
-        block bodycontent
+  head
+    block headblock
+      link(rel = "stylesheet" href="/css/style.css")
+      title #{title}
+
+  body
+    header
+      block headcontent
+        div
+          a(href="/") Index
+          a(href="/about") About
+          a(href="/help") Help
+    block bodycontent
+    block footcontent
     footer
-        p Copyright by Peter
+      p Copyright by Peter
