@@ -3,5 +3,6 @@ const validator = require('validator')
 
 mongoose.connect('mongodb://localhost/task-db',{
     useNewUrlParser:true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: true
 });
