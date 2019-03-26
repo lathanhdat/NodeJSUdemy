@@ -7,6 +7,7 @@ const userSchema = new Schema({
     account:{
         type: String,
         trim: true,
+        unique: true,
         required: true,
         lowercase: true,
     },
@@ -29,6 +30,7 @@ const userSchema = new Schema({
     },
     email:{
         type : String,
+        unique:true,
         trim:true,
         lowercase: true,
         required: true,
@@ -38,6 +40,16 @@ const userSchema = new Schema({
     }
 });
 
+
+userSchema.statics.findByCredentials = async (account,password) =>{
+    const user = await User.findOne({account})
+    if(!user) throw new Error('Unable to login')
+    const isMatch = await bcrypt.compare(password,user.password)
+    if (!isMatch) throw new Error ('Try again')
+    return user
+}
+
+//Hash password
 userSchema.pre('save',async function(next){
     const user = this
     if(user.isModified('password')) {
@@ -46,4 +58,5 @@ userSchema.pre('save',async function(next){
     next()
 })
 
-module.exports = mongoose.model('Users',userSchema);
+const User = mongoose.model('Users',userSchema);
+module.exports = User
