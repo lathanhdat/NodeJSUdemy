@@ -1,5 +1,6 @@
 const express = require('express')
 const UserPath = require('path').join(__dirname,'../models/users')
+const auth = require('../middleware/auth')
 const User = require(UserPath)
 const router = new express.Router()
 
@@ -7,6 +8,7 @@ const router = new express.Router()
 router.post('/users',async(req,res)=>{
     const user = new User(req.body)
     try {
+        await user.generateToken()
         await user.save()
         res.status(201).send(user)
     }
@@ -18,13 +20,13 @@ router.post('/users',async(req,res)=>{
 router.post('/users/login',async(req,res)=>{
     try {
         const user = await User.findByCredentials(req.body.account,req.body.password)
-        res.send(user)
+        const token = await user.generateToken()
+        res.send({user,token})
     }
     catch(e){
         res.status(400).send(e)
     }
 })
-
 
 router.patch('/users/:id',async (req,res)=>{
     const updates = Object.keys(req.body)
