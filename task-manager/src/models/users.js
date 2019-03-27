@@ -48,9 +48,18 @@ const userSchema = new Schema({
 userSchema.methods.generateToken = async function (){
     const user = this
     const token =jwt.sign({_id : user._id.toString()},'tasktoken')
-    user.tokens = user.tokens.concat({token}) 
+    user.tokens = user.tokens.concat({token})
     await user.save()
+    return token
 }
+userSchema.methods.toJSON = function (){
+    const user = this
+    const userData = user.toObject()
+    delete userData.password
+    delete userData.tokens
+    return userData
+}
+
 
 userSchema.statics.findByCredentials = async (account,password) =>{
     const user = await User.findOne({account})
@@ -65,7 +74,7 @@ userSchema.pre('save',async function(next){
     const user = this
     if(user.isModified('password')) {
         user.password = await bcrypt.hash(user.password,8)
-    } 
+    }
     next()
 })
 
