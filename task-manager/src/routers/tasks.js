@@ -1,10 +1,11 @@
 const express = require('express')
 const TaskPath = require('path').join(__dirname,'../models/tasks')
+const auth = require('../middleware/auth')
 const Task = require(TaskPath)
 const router = new express.Router()
 
 //Task end point
-router.post('/tasks',async (req,res)=>{
+router.post('/tasks',auth,async (req,res)=>{
     const task = new Task(req.body)
     try {
         await task.save()

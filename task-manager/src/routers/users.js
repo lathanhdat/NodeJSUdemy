@@ -49,30 +49,26 @@ router.post('/users/logoutAll',auth,async(req,res)=>{
         res.status(500).send()
     }
 })
-router.patch('/users/:id',async (req,res)=>{
+router.patch('/users/me',auth,async (req,res)=>{
     const updates = Object.keys(req.body)
-    const _id = req.params.id;
     const allowedUpdate = ['name','email','password','age']
     const isValid = updates.every((update)=> allowedUpdate.includes(update))
 
     if(!isValid) return res.status(400).send({error: 'Invalid updates!'})
     try {
-        const user = await User.findById(_id)
+        const user = req.user
         updates.forEach((update)=> user[update]=req.body[update])
         await user.save()
-        if(!user) return res.status(404).send()
         res.send(user)
     } catch (error) {
         res.status(400).send(error)
     }
 })
 
-router.delete('/users/:id',async (req,res)=>{
-    const _id = req.params.id;
+router.delete('/users/me',auth,async (req,res)=>{
     try {
-        const user = await User.findByIdAndDelete(_id)
-        if(!user) return res.status(404).send()
-        res.send(user)
+        await req.user.remove()
+        res.send(req.user)
     } catch (error) {
         res.status(500).send(error)
     }
@@ -88,17 +84,6 @@ router.get('/users/all',async (req,res)=>{
         res.send(users)
     } catch (error) {
         res.status(500).send(error)
-    }
-})
-
-router.get('/users/:id',async (req,res)=>{
-    const _id = req.params.id;
-    try {
-        const user = await User.findById(_id)
-        if (!user) return res.status(404).send()
-        res.send(user)
-    } catch (error) {
-        res.status(500).send()
     }
 })
 
