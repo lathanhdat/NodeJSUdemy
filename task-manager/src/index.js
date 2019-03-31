@@ -10,4 +10,6 @@ appExpress.use(experss.json())
 appExpress.use(userRouter)
 appExpress.use(taskRouter)
 
-appExpress.listen(port,()=>{})
+appExpress.listen(port,()=>{
+    console.log(`Server in on ${port}.`)
+})
