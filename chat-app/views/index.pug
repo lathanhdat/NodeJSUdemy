@@ -1,8 +1,14 @@
 extends templates/layout.pug
 
 append script
-  script(src="/socket.io/socket.io.js")
-  script(src="/js/chat.js")
 
-append addSomething
-  p From index
+append bodyblock
+  div(class="centered-form")
+    div(class="centered-form__box")
+      h1 Join
+      form(action="/chat.html")
+        label Display name
+        input(type="text" name="username" placeholder="Display name" required)
+        label Room
+        input(type="text" name="room" placeholder="Room" required)
+        button Join
